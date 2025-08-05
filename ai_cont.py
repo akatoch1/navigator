@@ -16,8 +16,7 @@ class TopDownNavEnvContinuous(gym.Env):
         n_obs: int = 1,
         obs_radius: float = 0.35,
         n_rays: int = 16,
-        lidar_range: float = 6.0,
-        seed: int | None = None,
+        lidar_range: float = 6.0
     ):
         super().__init__()
         self.arena_size = arena_size
