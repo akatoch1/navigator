@@ -69,8 +69,7 @@ class TopDownNavEnvContinuous(gym.Env):
         return np.array([obstacle_pos], dtype=np.float32)
 
     def reset(self, *, seed: int | None = None, options=None):
-        if seed is not None:
-            self.seed(seed)
+        super().reset(seed=seed)
 
         self._agent_pos = np.random.RandomState().uniform(-1.0, 1.0, 2) * self.arena_size * 0.25
         self._theta = np.random.RandomState().uniform(-math.pi, math.pi)
