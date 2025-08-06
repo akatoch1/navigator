@@ -9,23 +9,21 @@ class TopDownNavEnvContinuous(gym.Env):
     def __init__(
         self,
         arena_size: float = 5.0,
-        max_step_size: float = 0.20,  
-        max_turn_rate: float = math.pi / 12, 
+        max_step_size: float = 0.20, 
         goal_radius: float = 0.25,
         max_steps: int = 500,
         n_obs: int = 1,
-        obs_radius: float = 0.35,
         n_rays: int = 16,
         lidar_range: float = 6.0
     ):
         super().__init__()
         self.arena_size = arena_size
         self.max_step_size = max_step_size
-        self.max_turn_rate = max_turn_rate
+        self.max_turn_rate = math.pi / 12
         self.goal_radius = goal_radius
         self.max_steps = max_steps
         self.n_obs = n_obs
-        self.obs_radius = obs_radius
+        self.obs_radius = .35
         self.n_rays = n_rays
         self.lidar_range = lidar_range
 
@@ -45,7 +43,7 @@ class TopDownNavEnvContinuous(gym.Env):
     def seed(self, seed: int):
         np.random.RandomState().seed(seed)
 
-    def sample(self):
+    def create_obstacle(self):
         if self.n_obs == 0:
             return np.array([], dtype=np.float32).reshape(0, 2)
         
@@ -59,7 +57,7 @@ class TopDownNavEnvContinuous(gym.Env):
         obstacle_pos = self._agent_pos + t * to_goal
         
         perpendicular = np.array([-to_goal[1], to_goal[0]])
-     
+        # want to 
         perpendicular = perpendicular / np.linalg.norm(perpendicular)
         offset = np.random.RandomState().uniform(-0.5, 0.5) * self.obs_radius
         obstacle_pos += offset * perpendicular
@@ -78,7 +76,7 @@ class TopDownNavEnvContinuous(gym.Env):
             if np.linalg.norm(self._goal - self._agent_pos) > 2.5:
                 break
 
-        self._obstacles = self.sample()
+        self._obstacles = self.create_obstacle()
         self._step_counter = 0
         self._prev_dist = np.linalg.norm(self._goal - self._agent_pos)
         return self.get_objs(), {}
