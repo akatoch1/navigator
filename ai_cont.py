@@ -53,7 +53,7 @@ class TopDownNavEnvContinuous(gym.Env):
         obstacle_pos = self._agent_pos + t * to_goal
         
         perpendicular = np.array([-to_goal[1], to_goal[0]])
-        # want to 
+        # want to make sure obstacle is not always on straight line to goal
         perpendicular = perpendicular / np.linalg.norm(perpendicular)
         offset = np.random.RandomState().uniform(-0.5, 0.5) * self.obs_radius
         obstacle_pos += offset * perpendicular
@@ -82,6 +82,7 @@ class TopDownNavEnvContinuous(gym.Env):
         v = np.array([math.cos(angle_world), math.sin(angle_world)])
         max_t = self.lidar_range
         min_hit = max_t
+        # use quadratic formula for collision detection
         for c in self._obstacles:
             o = p0 - c
             b = 2 * np.dot(v, o)
