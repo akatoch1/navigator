@@ -37,11 +37,7 @@ class TopDownNavEnvContinuous(gym.Env):
         self.observation_space = spaces.Box(-high, high, dtype=np.float32)
 
        
-        if seed is not None:
-            self.seed(seed)
-
-    def seed(self, seed: int):
-        np.random.RandomState().seed(seed)
+       
 
     def create_obstacle(self):
         if self.n_obs == 0:
